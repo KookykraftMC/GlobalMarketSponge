@@ -23,5 +23,6 @@ public class ItemSerializer implements TypeSerializer<ItemStack> {
     public void serialize(TypeToken<?> type, ItemStack obj, ConfigurationNode value) throws ObjectMappingException {
         value.getNode("item-type").setValue(obj.getItem());
         value.getNode("item-quantity").setValue(obj.getQuantity());
+        //Testeroni
     }
 }
