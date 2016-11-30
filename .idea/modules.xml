@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/GlobalMarket.iml" filepath="$PROJECT_DIR$/.idea/modules/GlobalMarket.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/GlobalMarket_main.iml" filepath="$PROJECT_DIR$/.idea/modules/GlobalMarket_main.iml" group="GlobalMarket" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/GlobalMarket_test.iml" filepath="$PROJECT_DIR$/.idea/modules/GlobalMarket_test.iml" group="GlobalMarket" />
+    </modules>
+  </component>
+</project>
