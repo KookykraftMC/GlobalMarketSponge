@@ -16,9 +16,6 @@ import org.spongepowered.api.plugin.Plugin;
 import java.io.File;
 import java.io.IOException;
 
-/**
- * Created by TimeTheCat on 11/6/2016.
- */
 @Plugin(name = "GlobalMarket", id = "globalmarket", version = "0.0.1")
 public class GlobalMarket {
 
