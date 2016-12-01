@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="GlobalMarket:jar">
+    <output-path>$USER_HOME$/Desktop/spongeServ/mods</output-path>
+    <root id="archive" name="GlobalMarket.jar">
+      <element id="module-output" name="GlobalMarket_main" />
+    </root>
+  </artifact>
+</component>
