@@ -16,8 +16,8 @@ import org.spongepowered.api.plugin.Plugin;
 import java.io.File;
 import java.io.IOException;
 
-@Plugin(name = "GlobalMarket", id = "globalmarket", version = "0.0.1")
-public class GlobalMarket {
+@Plugin(name = "GlobalMarket", id = "globalmarket.kkmc", version = "0.0.1")
+public class GlobalMarketSponge {
 
     @Inject
     private Logger logger;
