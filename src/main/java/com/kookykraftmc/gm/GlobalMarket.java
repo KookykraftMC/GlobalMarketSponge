@@ -16,7 +16,10 @@ import org.spongepowered.api.plugin.Plugin;
 import java.io.File;
 import java.io.IOException;
 
-@Plugin(name = "GlobalMarket", id = "globalmarket.kkmc", version = "0.0.1")
+@Plugin(name = "GlobalMarket", id = "globalmarket", version = "0.0.1,",
+        description = "KKMC GlobalMarket Rewrite. Does market things.",
+        authors = "SolarShrieking, TimeTheCat",
+        url = "kookykraftmc.net")
 public class GlobalMarket {
 
     @Inject
