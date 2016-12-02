@@ -17,7 +17,7 @@ import java.io.File;
 import java.io.IOException;
 
 @Plugin(name = "GlobalMarket", id = "globalmarket.kkmc", version = "0.0.1")
-public class GlobalMarketSponge {
+public class GlobalMarket {
 
     @Inject
     private Logger logger;
