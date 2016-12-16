@@ -30,6 +30,7 @@ public class GlobalMarket {
     Game game = Sponge.getGame();
 
 
+
     /**
      * Called when the GameConstructionEvent is triggered. @Plugin is called here.
      * @param event GameConstructionEvent
@@ -94,6 +95,10 @@ public class GlobalMarket {
      */
     public Logger getLogger() {
         return logger;
+    }
+
+    public GlobalMarket getInstance() {
+        return globalMarket;
     }
 
 }
