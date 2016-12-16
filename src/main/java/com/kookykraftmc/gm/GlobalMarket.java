@@ -22,6 +22,8 @@ import java.io.IOException;
         url = "kookykraftmc.net")
 public class GlobalMarket {
 
+    public GlobalMarket globalMarket;
+
     @Inject
     private Logger logger;
 
