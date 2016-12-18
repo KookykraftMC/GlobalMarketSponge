@@ -8,16 +8,19 @@ import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
-public class MenuCommand implements CommandExecutor {
-
-
+public class HelpCommand implements CommandExecutor {
 
     @Override
     public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
-        src.sendMessage(Text.of(TextColors.AQUA, "This should open the main menu for GlobalMarket."));
-        //TODO: Open the GlobalMarket Menu
+        src.sendMessage(Text.of(
+                TextColors.RED, "--------- GlobalMarket Commands ---------"
+                + "\n/gm help        List all GM Commands"
+                + "\n/gm menu       Opens GM Interface"
+                + "\n/gm reload     Reloads GM"
+                + "\n-----------------------------------------"
+        ));
+
         return CommandResult.success();
     }
-
 
 }

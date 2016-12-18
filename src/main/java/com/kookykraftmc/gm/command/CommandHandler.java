@@ -2,10 +2,17 @@ package com.kookykraftmc.gm.command;
 
 import com.kookykraftmc.gm.GlobalMarket;
 import jdk.nashorn.internal.objects.Global;
+import org.spongepowered.api.Game;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.command.spec.CommandSpec;
+import org.spongepowered.api.plugin.PluginContainer;
 import org.spongepowered.api.text.Text;
+import org.spongepowered.api.text.format.TextColor;
+import org.spongepowered.api.text.format.TextColors;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * This class exists purely to handle commands. It will then be delegated to other classes for specific instances
@@ -18,27 +25,45 @@ public class CommandHandler {
     //TODO: Reload Command
     //TODO: Create a Player Listing from Command ?Possible?
 
-    private CommandSpec menuCommand;
-    private GlobalMarket globalMarket;
+    private CommandSpec command;
 
     public CommandHandler() {
-        menuCommand = CommandSpec.builder()
+        CommandSpec helpCommand = CommandSpec.builder()
+                .description(Text.of("GlobalMarket Help"))
+                .permission("gms.help")
+                .executor(new HelpCommand())
+                .build();
+
+        CommandSpec reloadCommand = CommandSpec.builder()
+                .description(Text.of("Reload GlobalMarket"))
+                .permission("gms.reload")
+                .executor(new ReloadCommand())
+                .build();
+
+        CommandSpec menuCommand = CommandSpec.builder()
                 .description(Text.of("GlobalMarket Menu"))
                 .permission("gms.use")
                 .executor(new MenuCommand())
-//                .arguments(
-//                GenericArguments.onlyOne(GenericArguments.player(Text.of("player")))//,
-//                GenericArguments.remainingJoinedStrings(Text.of("message"))
-//                )
+                .build();
+
+
+        //The main command of the plugin. This MUST be initialized after all of the children or bad things will happen!
+        command = CommandSpec.builder()
+                .description(Text.of("GlobalMarket Menu"))
+                .permission("gms.use")
+                .child(helpCommand, "help")
+                .child(reloadCommand, "reload")
+                .child(menuCommand, "menu")
+                .executor(new MenuCommand())
                 .build();
 
 
     }
 
-    /**
-     * Registers each command.
-     */
-    public void registerCommands() {
-        Sponge.getCommandManager().register(globalMarket, menuCommand, "market", "gm");
+    public void registerCommands(Game game, PluginContainer plugin) {
+        game.getCommandManager().register(plugin, command, "gm");
+
+        plugin.getLogger().info("GlobalMarket commands have been registered!");
     }
+
 }
