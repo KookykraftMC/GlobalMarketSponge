@@ -6,37 +6,49 @@ import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.spec.CommandExecutor;
-import org.spongepowered.api.data.type.HandPreference;
-import org.spongepowered.api.data.type.HandType;
-import org.spongepowered.api.entity.living.Living;
 import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.item.ItemTypes;
+import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
+import java.math.BigDecimal;
+
 import static org.spongepowered.api.data.type.HandTypes.MAIN_HAND;
 
-public class ListingCommand implements CommandExecutor {
-
-    Listing listing;
+public class ListingCommand  implements CommandExecutor{
 
     @Override
     public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
         if (src instanceof Player) {
             Player seller = (Player) src;
-            listing = new Listing();
-            listing.setSeller(seller);
+            BigDecimal price = argsPrice(src, args);
 
-            listing.setItem(seller.getItemInHand(MAIN_HAND).get());
+            Listing listing = new Listing(seller, getItemInHand(seller), price);
 
             src.sendMessage(Text.of(
                     TextColors.AQUA,
                     listing.getSeller().getName() +
-                    " has created a listing of " +
-                    listing.getItem().getQuantity() + " " +
-                    listing.getItem().getItem().toString()
+                            " has listed " +
+                            listing.getItem().getQuantity() + " " +
+                            listing.getItem().getItem().getId().substring(10) + //minecraft:xxxxxxx or NONE, substring(10)
+                            " for $" + listing.getPrice()
             ));
         }
         //TODO: Create Listing, nonGUI. Handles both player and admin creation.
         return CommandResult.success();
+    }
+
+    private ItemStack getItemInHand(Player player) {
+        return player.getItemInHand(MAIN_HAND).orElse(ItemStack.of(ItemTypes.NONE, 1));
+    }
+
+
+    private BigDecimal argsPrice(CommandSource src, CommandContext args) {
+        String arg = args.getOne(Text.of("price")).get().toString();
+        BigDecimal bd = new BigDecimal(arg);
+        bd = bd.setScale(2, BigDecimal.ROUND_FLOOR);
+
+        return bd;
     }
 }

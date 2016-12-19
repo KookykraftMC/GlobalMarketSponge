@@ -44,6 +44,11 @@ public class CommandHandler {
                 .description(Text.of("Create GlobalMarket listing"))
                 .permission("gms.create")
                 .executor(new ListingCommand())
+                .arguments(
+                        GenericArguments.onlyOne(
+                                GenericArguments.doubleNum(Text.of("price"))
+                        )
+                )
                 .build();
 
         CommandSpec menuCommand = CommandSpec.builder()

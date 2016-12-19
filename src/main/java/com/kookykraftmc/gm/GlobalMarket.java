@@ -15,8 +15,10 @@ import org.spongepowered.api.config.DefaultConfig;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.command.TabCompleteEvent;
 import org.spongepowered.api.event.game.state.*;
+import org.spongepowered.api.event.service.ChangeServiceProviderEvent;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.plugin.PluginContainer;
+import org.spongepowered.api.service.economy.EconomyService;
 import org.spongepowered.api.text.Text;
 
 import java.io.File;
@@ -49,6 +51,8 @@ public class GlobalMarket {
     @Inject
     @DefaultConfig(sharedRoot = true)
     private ConfigurationLoader<CommentedConfigurationNode> configManager;
+
+    private EconomyService economyService;
 
     /**
      * Called when the GamePreInitializationEvent is triggered. Logger access available and config file location here
@@ -117,5 +121,11 @@ public class GlobalMarket {
 
     private ConfigurationLoader<CommentedConfigurationNode> getConfigManager() {
         return configManager;
+    }
+
+    @Listener
+    public void onChangeServiceProvider(ChangeServiceProviderEvent event) {
+        if (event.getService().equals(EconomyService.class))
+            economyService = (EconomyService) event.getNewProviderRegistration().getProvider();
     }
 }
