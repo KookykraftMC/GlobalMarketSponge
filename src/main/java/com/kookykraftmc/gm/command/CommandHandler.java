@@ -40,6 +40,12 @@ public class CommandHandler {
                 .executor(new ReloadCommand())
                 .build();
 
+        CommandSpec listingCommand = CommandSpec.builder()
+                .description(Text.of("Create GlobalMarket listing"))
+                .permission("gms.create")
+                .executor(new ListingCommand())
+                .build();
+
         CommandSpec menuCommand = CommandSpec.builder()
                 .description(Text.of("GlobalMarket Menu"))
                 .permission("gms.use")
@@ -54,6 +60,7 @@ public class CommandHandler {
                 .child(helpCommand, "help")
                 .child(reloadCommand, "reload")
                 .child(menuCommand, "menu")
+                .child(listingCommand, "create")
                 .executor(new MenuCommand())
                 .build();
 
