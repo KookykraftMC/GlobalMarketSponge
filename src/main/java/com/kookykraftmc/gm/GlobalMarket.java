@@ -2,30 +2,22 @@ package com.kookykraftmc.gm;
 
 import com.google.inject.Inject;
 import com.kookykraftmc.gm.command.CommandHandler;
-import com.kookykraftmc.gm.command.MenuCommand;
-import com.kookykraftmc.gm.config.Config;
-import ninja.leaping.configurate.ConfigurationNode;
+import com.kookykraftmc.gm.config.Configuration;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.loader.ConfigurationLoader;
 import org.slf4j.Logger;
 import org.spongepowered.api.Game;
-import org.spongepowered.api.Sponge;
-import org.spongepowered.api.command.spec.CommandSpec;
-import org.spongepowered.api.config.ConfigDir;
 import org.spongepowered.api.config.DefaultConfig;
 import org.spongepowered.api.event.Listener;
-import org.spongepowered.api.event.command.TabCompleteEvent;
-import org.spongepowered.api.event.game.state.*;
+import org.spongepowered.api.event.game.state.GameInitializationEvent;
+import org.spongepowered.api.event.game.state.GamePostInitializationEvent;
+import org.spongepowered.api.event.game.state.GamePreInitializationEvent;
 import org.spongepowered.api.event.service.ChangeServiceProviderEvent;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.plugin.PluginContainer;
 import org.spongepowered.api.service.economy.EconomyService;
-import org.spongepowered.api.text.Text;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.util.Optional;
 
 @Plugin(name = "GlobalMarket", id = "globalmarket", version = "0.0.4,",
         description = "KKMC GlobalMarket Rewrite. Does market things.",
@@ -43,7 +35,7 @@ public class GlobalMarket {
     @Inject
     private Logger logger;
 
-    private Config config;
+    private Configuration configuration;
 
     private EconomyService economyService;
 
@@ -56,15 +48,15 @@ public class GlobalMarket {
     private ConfigurationLoader<CommentedConfigurationNode> configManager;
 
     /**
-     * Called when the GamePreInitializationEvent is triggered. Logger access available and config file location here
+     * Called when the GamePreInitializationEvent is triggered. Logger access available and configuration file location here
      *      is available.
      * @param event GamePreInitializationEvent
      */
     @Listener
     public void preInit(GamePreInitializationEvent event) {
         getLogger().info("GlobalMarket is now loading! Standby for critical failure.");
-        //Setup Config
-        config = new Config(plugin, defaultConfig, configManager);
+        //Setup Configuration
+        configuration = new Configuration(plugin, defaultConfig, configManager);
     }
 
     /**

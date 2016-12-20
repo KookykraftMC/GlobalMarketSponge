@@ -1,13 +1,13 @@
 package com.kookykraftmc.gm.command;
 
-import com.kookykraftmc.gm.Listing;
+import com.kookykraftmc.gm.storage.Listing;
+import com.kookykraftmc.gm.storage.ListingHandler;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.entity.living.player.Player;
-import org.spongepowered.api.item.ItemTypes;
 import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
@@ -18,6 +18,8 @@ import static org.spongepowered.api.data.type.HandTypes.MAIN_HAND;
 
 public class ListingCommand  implements CommandExecutor{
 
+    private ListingHandler listingHandler;
+
     @Override
     public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
         if (src instanceof Player) {
@@ -26,7 +28,8 @@ public class ListingCommand  implements CommandExecutor{
             Listing listing;
 
             if(getItemInHand(seller) != null) {
-                listing = new Listing(seller, getItemInHand(seller), price);
+//                listing = new Listing(seller, getItemInHand(seller), price);
+                listing = listingHandler.create(seller, getItemInHand(seller), price);
 
                 src.sendMessage(Text.of(
                         TextColors.AQUA,

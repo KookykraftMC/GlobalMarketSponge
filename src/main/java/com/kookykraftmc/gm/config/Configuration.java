@@ -1,17 +1,14 @@
 package com.kookykraftmc.gm.config;
 
-import com.google.inject.Inject;
-import com.kookykraftmc.gm.GlobalMarket;
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.loader.ConfigurationLoader;
-import org.spongepowered.api.config.DefaultConfig;
 import org.spongepowered.api.plugin.PluginContainer;
 
 import java.io.File;
 import java.io.IOException;
 
-public class Config {
+public class Configuration {
 
     private File defaultConfig;
 
@@ -21,7 +18,7 @@ public class Config {
 
     private PluginContainer plugin;
 
-    public Config(PluginContainer plugin, File defaultConfig, ConfigurationLoader<CommentedConfigurationNode> configManager) {
+    public Configuration(PluginContainer plugin, File defaultConfig, ConfigurationLoader<CommentedConfigurationNode> configManager) {
         this.plugin = plugin;
         this.defaultConfig = defaultConfig;
         this.configManager = configManager;
