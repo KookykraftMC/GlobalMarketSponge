@@ -1,4 +1,4 @@
-package com.kookykraftmc.gm.storage;
+package com.kookykraftmc.gm.listing;
 
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.item.inventory.ItemStack;

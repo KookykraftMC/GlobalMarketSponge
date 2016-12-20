@@ -1,7 +1,7 @@
 package com.kookykraftmc.gm.command;
 
-import com.kookykraftmc.gm.storage.Listing;
-import com.kookykraftmc.gm.storage.ListingHandler;
+import com.kookykraftmc.gm.listing.Listing;
+import com.kookykraftmc.gm.listing.ListingHandler;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;

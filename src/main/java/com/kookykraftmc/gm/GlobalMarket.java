@@ -3,6 +3,7 @@ package com.kookykraftmc.gm;
 import com.google.inject.Inject;
 import com.kookykraftmc.gm.command.CommandHandler;
 import com.kookykraftmc.gm.config.Configuration;
+import com.kookykraftmc.gm.storage.SQL;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.loader.ConfigurationLoader;
 import org.slf4j.Logger;
@@ -17,7 +18,9 @@ import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.plugin.PluginContainer;
 import org.spongepowered.api.service.economy.EconomyService;
 
+import javax.sql.DataSource;
 import java.io.File;
+import java.sql.SQLException;
 
 @Plugin(name = "GlobalMarket", id = "globalmarket", version = "0.0.4,",
         description = "KKMC GlobalMarket Rewrite. Does market things.",
@@ -57,6 +60,7 @@ public class GlobalMarket {
         getLogger().info("GlobalMarket is now loading! Standby for critical failure.");
         //Setup Configuration
         configuration = new Configuration(plugin, defaultConfig, configManager);
+        configuration.loadConfig(logger);
     }
 
     /**
@@ -66,10 +70,15 @@ public class GlobalMarket {
      */
     @Listener
     public void init(GameInitializationEvent event) {
-
         //Create & Register Commands.
         CommandHandler commandHandler = new CommandHandler();
         commandHandler.registerCommands(getGame(), getPlugin());
+
+        //Test SQL Connection
+            SQL sql = new SQL(configuration.getConfig(), true, logger);
+            String test = "SELECT 1";
+//            DataSource ds = sql.getDataSource("jdbc:mysql://localhost:3306/globalmarket?user=root&password=solar");
+            sql.execute(test, sql.getDataSource());
 
     }
 
@@ -112,5 +121,9 @@ public class GlobalMarket {
     public void onChangeServiceProvider(ChangeServiceProviderEvent event) {
         if (event.getService().equals(EconomyService.class))
             economyService = (EconomyService) event.getNewProviderRegistration().getProvider();
+    }
+
+    public Configuration getConfiguration() {
+        return configuration;
     }
 }
