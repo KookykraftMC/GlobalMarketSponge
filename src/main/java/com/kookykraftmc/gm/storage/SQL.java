@@ -67,7 +67,7 @@ public class SQL {
         String username = config.getNode("Database", "Username").getValue().toString();
         String password = config.getNode("Database", "Password").getValue().toString();
 
-        return "jdbc:mysql://" + "127.0.0.1" + ":" +
+        return "jdbc:mysql://" + hostname + ":" +
                 port + "/" + database + "?user=" +
                 username + "&password=" + password;
     }
