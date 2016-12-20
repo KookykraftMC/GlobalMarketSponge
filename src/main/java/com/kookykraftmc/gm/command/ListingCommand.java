@@ -23,24 +23,34 @@ public class ListingCommand  implements CommandExecutor{
         if (src instanceof Player) {
             Player seller = (Player) src;
             BigDecimal price = argsPrice(src, args);
+            Listing listing;
 
-            Listing listing = new Listing(seller, getItemInHand(seller), price);
+            if(getItemInHand(seller) != null) {
+                listing = new Listing(seller, getItemInHand(seller), price);
 
-            src.sendMessage(Text.of(
-                    TextColors.AQUA,
-                    listing.getSeller().getName() +
-                            " has listed " +
-                            listing.getItem().getQuantity() + " " +
-                            listing.getItem().getItem().getId().substring(10) + //minecraft:xxxxxxx or NONE, substring(10)
-                            " for $" + listing.getPrice()
-            ));
+                src.sendMessage(Text.of(
+                        TextColors.AQUA,
+                        listing.getSeller().getName() +
+                                " has listed " +
+                                listing.getItem().getQuantity() + " " +
+                                listing.getItem().getItem().getId().substring(10) +
+                                " for $" + listing.getPrice()
+                ));
+            } else {
+                src.sendMessage(Text.of(
+                        TextColors.RED,
+                        "Error: There is no item in your hand."
+                ));
+            }
+
+
         }
         //TODO: Create Listing, nonGUI. Handles both player and admin creation.
         return CommandResult.success();
     }
 
     private ItemStack getItemInHand(Player player) {
-        return player.getItemInHand(MAIN_HAND).orElse(ItemStack.of(ItemTypes.NONE, 1));
+        return player.getItemInHand(MAIN_HAND).orElse(null);
     }
 
 
