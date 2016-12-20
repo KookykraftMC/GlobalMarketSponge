@@ -3,6 +3,7 @@ package com.kookykraftmc.gm;
 import com.google.inject.Inject;
 import com.kookykraftmc.gm.command.CommandHandler;
 import com.kookykraftmc.gm.command.MenuCommand;
+import com.kookykraftmc.gm.config.Config;
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.loader.ConfigurationLoader;
@@ -33,8 +34,6 @@ public class GlobalMarket {
 
     public static final String NAME = "GlobalMarket";
 
-    private ConfigurationNode config = null;
-
     @Inject
     private PluginContainer plugin;
 
@@ -44,6 +43,10 @@ public class GlobalMarket {
     @Inject
     private Logger logger;
 
+    private Config config;
+
+    private EconomyService economyService;
+
     @Inject
     @DefaultConfig(sharedRoot = true)
     private File defaultConfig;
@@ -51,8 +54,6 @@ public class GlobalMarket {
     @Inject
     @DefaultConfig(sharedRoot = true)
     private ConfigurationLoader<CommentedConfigurationNode> configManager;
-
-    private EconomyService economyService;
 
     /**
      * Called when the GamePreInitializationEvent is triggered. Logger access available and config file location here
@@ -63,7 +64,7 @@ public class GlobalMarket {
     public void preInit(GamePreInitializationEvent event) {
         getLogger().info("GlobalMarket is now loading! Standby for critical failure.");
         //Setup Config
-
+        config = new Config(plugin, defaultConfig, configManager);
     }
 
     /**
@@ -113,14 +114,6 @@ public class GlobalMarket {
 
     private Game getGame() {
         return game;
-    }
-
-    private File getDefaultConfig() {
-        return defaultConfig;
-    }
-
-    private ConfigurationLoader<CommentedConfigurationNode> getConfigManager() {
-        return configManager;
     }
 
     @Listener

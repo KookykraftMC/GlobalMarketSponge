@@ -45,10 +45,7 @@ public class ListingCommand  implements CommandExecutor{
 
 
     private BigDecimal argsPrice(CommandSource src, CommandContext args) {
-        String arg = args.getOne(Text.of("price")).get().toString();
-        BigDecimal bd = new BigDecimal(arg);
-        bd = bd.setScale(2, BigDecimal.ROUND_FLOOR);
-
-        return bd;
+        String arg = args.getOne(Text.of("price")).get().toString(); //No need to check for isPresent here.
+        return new BigDecimal(arg).setScale(2, BigDecimal.ROUND_FLOOR);
     }
 }
