@@ -17,6 +17,7 @@ import org.spongepowered.api.text.format.TextColors;
 import java.math.BigDecimal;
 
 import static org.spongepowered.api.data.type.HandTypes.MAIN_HAND;
+import static org.spongepowered.api.data.type.HandTypes.OFF_HAND;
 
 public class ListingCommand implements CommandExecutor {
 
@@ -34,7 +35,13 @@ public class ListingCommand implements CommandExecutor {
 
             if (getItemInHand(seller) != null) {
                 listing = new Listing(seller, getItemInHand(seller), price);
-                listingHandler.createSQLListing(seller, getItemInHand(seller), price);
+
+                src.sendMessage(Text.of(
+                        TextColors.RED,
+                        seller.getItemInHand(MAIN_HAND).get()
+                ));
+
+                ((Player) src).setItemInHand(OFF_HAND, getItemInHand(seller));
 
                 src.sendMessage(Text.of(
                         TextColors.AQUA,

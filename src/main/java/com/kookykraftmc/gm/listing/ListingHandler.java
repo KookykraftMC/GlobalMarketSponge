@@ -26,25 +26,21 @@ public class ListingHandler {
             "ExpiryTime int " +
             ");";
 
-    private PluginContainer plugin;
-    private Configuration config;
-    private Logger logger;
+    private GlobalMarket plugin;
 
-    public ListingHandler(PluginContainer plugin, Configuration config, Logger logger) {
+    public ListingHandler(GlobalMarket plugin) {
         this.plugin = plugin;
-        this.config = config;
-        this.logger = logger;
     }
 
     public Listing create(Player player, ItemStack item, BigDecimal price) {
         //Add to Storage
-//        createSQLListing(player, item, price);
+        createSQLListing(player, item, price);
 
         return new Listing(player, item, price);
     }
 
     public boolean createSQLListing(Player player, ItemStack item, BigDecimal price) {
-        SQL sql = new SQL(config.getConfig(), logger);
+        SQL sql = new SQL(plugin);
         String createListing = "INSERT INTO listings VALUES (" +
                 "'1'," +
                 "'" + player.getUniqueId() + "'," +

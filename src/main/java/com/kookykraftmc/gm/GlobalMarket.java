@@ -16,13 +16,9 @@ import org.spongepowered.api.event.game.state.GamePostInitializationEvent;
 import org.spongepowered.api.event.game.state.GamePreInitializationEvent;
 import org.spongepowered.api.event.service.ChangeServiceProviderEvent;
 import org.spongepowered.api.plugin.Plugin;
-import org.spongepowered.api.plugin.PluginContainer;
 import org.spongepowered.api.service.economy.EconomyService;
-import org.spongepowered.api.service.sql.SqlService;
 
-import javax.sql.DataSource;
 import java.io.File;
-import java.sql.SQLException;
 
 @Plugin(name = "GlobalMarket", id = "globalmarket", version = "0.0.4,",
         description = "KKMC GlobalMarket Rewrite. Does market things.",
@@ -32,7 +28,7 @@ public class GlobalMarket {
     public static final String NAME = "GlobalMarket";
 
     @Inject
-    private PluginContainer plugin;
+    private GlobalMarket plugin;
 
     @Inject
     private Game game;
@@ -64,7 +60,7 @@ public class GlobalMarket {
     public void preInit(GamePreInitializationEvent event) {
         getLogger().info("GlobalMarket is now loading! Standby for critical failure.");
         //Setup Configuration
-        configuration = new Configuration(plugin, defaultConfig, configManager);
+        configuration = new Configuration(this);
         configuration.loadConfig(logger);
     }
 
@@ -78,16 +74,16 @@ public class GlobalMarket {
     public void init(GameInitializationEvent event) {
         //Create & Register Commands.
         CommandHandler commandHandler = new CommandHandler();
-        commandHandler.registerCommands(getGame(), getPlugin());
+        commandHandler.registerCommands(this);
 
         //Test SQL Connection
-        SQL sql = new SQL(configuration.getConfig(), logger);
+        SQL sql = new SQL(this);
         String test = "SELECT 1";
         sql.execute(test, sql.getDataSource());
 
         //Create Listings Table
-        listingHandler = new ListingHandler(plugin, configuration, logger);
-        SQL sql2 = new SQL(configuration.getConfig(), logger);
+        listingHandler = new ListingHandler(this);
+        SQL sql2 = new SQL(this);
         sql2.execute(ListingHandler.SQL_LISTING_TABLE_CREATE, sql2.getDataSource());
     }
 
@@ -117,15 +113,15 @@ public class GlobalMarket {
      *
      * @return logger - The plugin's instance of logger.
      */
-    private Logger getLogger() {
+    public Logger getLogger() {
         return logger;
     }
 
-    private PluginContainer getPlugin() {
+    public GlobalMarket getPlugin() {
         return plugin;
     }
 
-    private Game getGame() {
+    public Game getGame() {
         return game;
     }
 

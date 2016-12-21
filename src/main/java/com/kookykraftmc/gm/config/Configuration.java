@@ -1,10 +1,10 @@
 package com.kookykraftmc.gm.config;
 
+import com.kookykraftmc.gm.GlobalMarket;
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.loader.ConfigurationLoader;
 import org.slf4j.Logger;
-import org.spongepowered.api.plugin.PluginContainer;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,12 +17,12 @@ public class Configuration {
 
     private ConfigurationNode config;
 
-    private PluginContainer plugin;
+    private GlobalMarket plugin;
 
-    public Configuration(PluginContainer plugin, File defaultConfig, ConfigurationLoader<CommentedConfigurationNode> configManager) {
+    public Configuration(GlobalMarket plugin) {
         this.plugin = plugin;
-        this.defaultConfig = defaultConfig;
-        this.configManager = configManager;
+        this.defaultConfig = plugin.getConfiguration().getDefaultConfig();
+        this.configManager = plugin.getConfiguration().getConfigManager();
     }
 
     public void loadConfig(Logger logger) {

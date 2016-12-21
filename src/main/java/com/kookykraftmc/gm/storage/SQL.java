@@ -1,5 +1,6 @@
 package com.kookykraftmc.gm.storage;
 
+import com.kookykraftmc.gm.GlobalMarket;
 import com.kookykraftmc.gm.config.Configuration;
 import ninja.leaping.configurate.ConfigurationNode;
 import org.slf4j.Logger;
@@ -28,17 +29,11 @@ public class SQL {
 
     private SqlService sql;
     private DataSource dataSource;
-    private Logger logger;
 
 
-    /**
-     * @param config     The Existing Configuration Object
-     * @param logger     Logger instance.
-     */
-    public SQL(ConfigurationNode config, Logger logger) {
-        this.logger = logger;
+    public SQL(GlobalMarket plugin) {
 
-            String jdbcURL = createURL(config);
+            String jdbcURL = createURL(plugin.getConfiguration().getConfig());
 
             try {
                 dataSource = getDataSource(jdbcURL);

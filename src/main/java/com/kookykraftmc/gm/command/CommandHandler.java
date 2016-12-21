@@ -72,8 +72,8 @@ public class CommandHandler {
 
     }
 
-    public void registerCommands(Game game, PluginContainer plugin) {
-        game.getCommandManager().register(plugin, command, "gm");
+    public void registerCommands(GlobalMarket plugin) {
+        plugin.getGame().getCommandManager().register(plugin, command, "gm");
 
         plugin.getLogger().info("GlobalMarket commands have been registered!");
     }
