@@ -20,38 +20,31 @@ public class SQL {
      * Create a DataSource
      * Create a Command to be executed
      * Execute the command - This opens the connection, executes, then closes
-     *
+     * <p>
      * Example:
      * SQL sql        = new SQL(config, true, logger);
-     * String command = "SQL COMMAND";
-     * sql.execute(commmand, sql.getDataSource();
+     * sql.execute("SQL COMMAND STRING", sql.getDataSource());
      */
 
-    private String jdbcURL;
     private SqlService sql;
     private DataSource dataSource;
     private Logger logger;
 
 
     /**
-     *
-     * @param config        The Existing Configuration Object
-     * @param defaultURL    Use config-defined database. Usually, if not always, true.
-     * @param logger        Logger instance.
+     * @param config     The Existing Configuration Object
+     * @param logger     Logger instance.
      */
-    public SQL(ConfigurationNode config, boolean defaultURL, Logger logger) {
+    public SQL(ConfigurationNode config, Logger logger) {
         this.logger = logger;
 
-        if (defaultURL) {
-            jdbcURL = createURL(config);
+            String jdbcURL = createURL(config);
 
             try {
                 dataSource = getDataSource(jdbcURL);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-
-        }
     }
 
     /**
@@ -75,8 +68,8 @@ public class SQL {
     /**
      * Gets the DataSource.
      *
-     * @param jdbcURL       The jdbcURL.
-     * @return              DataSource.
+     * @param jdbcURL The jdbcURL.
+     * @return DataSource.
      * @throws SQLException One would hope not.
      */
     public DataSource getDataSource(String jdbcURL) throws SQLException {
@@ -94,8 +87,8 @@ public class SQL {
     /**
      * Creates the connection, Executes the command, Closes the connection.
      *
-     * @param command       Command to be executed in the SQL Database
-     * @param dataSource    Datasource.
+     * @param command    Command to be executed in the SQL Database
+     * @param dataSource Datasource.
      */
     public boolean execute(String command, DataSource dataSource) {
         try {

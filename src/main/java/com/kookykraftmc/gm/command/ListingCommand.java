@@ -1,5 +1,6 @@
 package com.kookykraftmc.gm.command;
 
+import com.kookykraftmc.gm.GlobalMarket;
 import com.kookykraftmc.gm.listing.Listing;
 import com.kookykraftmc.gm.listing.ListingHandler;
 import org.spongepowered.api.command.CommandException;
@@ -8,6 +9,7 @@ import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.item.ItemTypes;
 import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
@@ -16,20 +18,23 @@ import java.math.BigDecimal;
 
 import static org.spongepowered.api.data.type.HandTypes.MAIN_HAND;
 
-public class ListingCommand  implements CommandExecutor{
+public class ListingCommand implements CommandExecutor {
 
     private ListingHandler listingHandler;
 
     @Override
     public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
         if (src instanceof Player) {
+
+            listingHandler = GlobalMarket.listingHandler;
+
             Player seller = (Player) src;
             BigDecimal price = argsPrice(src, args);
             Listing listing;
 
-            if(getItemInHand(seller) != null) {
-//                listing = new Listing(seller, getItemInHand(seller), price);
-                listing = listingHandler.create(seller, getItemInHand(seller), price);
+            if (getItemInHand(seller) != null) {
+                listing = new Listing(seller, getItemInHand(seller), price);
+                listingHandler.createSQLListing(seller, getItemInHand(seller), price);
 
                 src.sendMessage(Text.of(
                         TextColors.AQUA,

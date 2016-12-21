@@ -3,6 +3,7 @@ package com.kookykraftmc.gm;
 import com.google.inject.Inject;
 import com.kookykraftmc.gm.command.CommandHandler;
 import com.kookykraftmc.gm.config.Configuration;
+import com.kookykraftmc.gm.listing.ListingHandler;
 import com.kookykraftmc.gm.storage.SQL;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.loader.ConfigurationLoader;
@@ -17,6 +18,7 @@ import org.spongepowered.api.event.service.ChangeServiceProviderEvent;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.plugin.PluginContainer;
 import org.spongepowered.api.service.economy.EconomyService;
+import org.spongepowered.api.service.sql.SqlService;
 
 import javax.sql.DataSource;
 import java.io.File;
@@ -38,7 +40,7 @@ public class GlobalMarket {
     @Inject
     private Logger logger;
 
-    private Configuration configuration;
+    public static Configuration configuration;
 
     private EconomyService economyService;
 
@@ -50,9 +52,12 @@ public class GlobalMarket {
     @DefaultConfig(sharedRoot = true)
     private ConfigurationLoader<CommentedConfigurationNode> configManager;
 
+    public static ListingHandler listingHandler;
+
     /**
      * Called when the GamePreInitializationEvent is triggered. Logger access available and configuration file location here
-     *      is available.
+     * is available.
+     *
      * @param event GamePreInitializationEvent
      */
     @Listener
@@ -65,7 +70,8 @@ public class GlobalMarket {
 
     /**
      * Called when the GameInitializationEvent is triggered. GlobalMarket should finish any work needed to be
-     *      functional. Global Event Handlers are registered here.
+     * functional. Global Event Handlers are registered here.
+     *
      * @param event GameInitializationEvent
      */
     @Listener
@@ -75,16 +81,20 @@ public class GlobalMarket {
         commandHandler.registerCommands(getGame(), getPlugin());
 
         //Test SQL Connection
-            SQL sql = new SQL(configuration.getConfig(), true, logger);
-            String test = "SELECT 1";
-//            DataSource ds = sql.getDataSource("jdbc:mysql://localhost:3306/globalmarket?user=root&password=solar");
-            sql.execute(test, sql.getDataSource());
+        SQL sql = new SQL(configuration.getConfig(), logger);
+        String test = "SELECT 1";
+        sql.execute(test, sql.getDataSource());
 
+        //Create Listings Table
+        listingHandler = new ListingHandler(plugin, configuration, logger);
+        SQL sql2 = new SQL(configuration.getConfig(), logger);
+        sql2.execute(ListingHandler.SQL_LISTING_TABLE_CREATE, sql2.getDataSource());
     }
 
     /**
      * Called when the GamePostInitializationEvent is triggered. Inter-plugin communication can happen, external API
- *      calls are now allowed.
+     * calls are now allowed.
+     *
      * @param event GamePostInitializationEvent
      */
     @Listener
@@ -94,7 +104,8 @@ public class GlobalMarket {
 
     /**
      * Sets the logger. As expected.
-     * @param logger    The Logger
+     *
+     * @param logger The Logger
      */
     @Inject
     private void setLogger(Logger logger) {
@@ -103,6 +114,7 @@ public class GlobalMarket {
 
     /**
      * Returns the logger. Use this for all logger calls, ex getLogger().info("Rekt")
+     *
      * @return logger - The plugin's instance of logger.
      */
     private Logger getLogger() {
