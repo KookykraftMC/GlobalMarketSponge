@@ -13,8 +13,10 @@ public class Listing {
     private ItemStack item;
     private Player seller;
     private BigDecimal price;
+    private String creationTime;
+    private String expiryTime;
 
-    public Listing(Player seller, ItemStack item, BigDecimal price) {
+    public Listing(Player seller, ItemStack item, BigDecimal price, String creationTime, String expiryTime) {
         setSeller(seller);
         setItem(item);
         setPrice(price);

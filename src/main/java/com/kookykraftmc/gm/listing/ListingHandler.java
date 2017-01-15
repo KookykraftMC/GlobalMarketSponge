@@ -4,14 +4,19 @@ import com.kookykraftmc.gm.GlobalMarket;
 import com.kookykraftmc.gm.config.Configuration;
 import com.kookykraftmc.gm.storage.SQL;
 import org.slf4j.Logger;
+import org.spongepowered.api.Sponge;
+import org.spongepowered.api.data.DataContainer;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.item.ItemType;
 import org.spongepowered.api.item.ItemTypes;
+import org.spongepowered.api.item.inventory.Container;
 import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.plugin.PluginContainer;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 //Handles listings. Amazing.
 public class ListingHandler {
@@ -32,22 +37,25 @@ public class ListingHandler {
         this.plugin = plugin;
     }
 
-    public Listing create(Player player, ItemStack item, BigDecimal price) {
+    public Listing create(Player player, ItemStack item, BigDecimal price, DataContainer cItem,
+                          String creationTime, String expiryTime) {
         //Add to Storage
-        createSQLListing(player, item, price);
+        createSQLListing(player, cItem, price, creationTime, expiryTime);
 
-        return new Listing(player, item, price);
+
+        return new Listing(player, item, price, "", ""); //TODO: Put shit here.
     }
 
-    public boolean createSQLListing(Player player, ItemStack item, BigDecimal price) {
+    public boolean createSQLListing(Player player, DataContainer item, BigDecimal price,
+                                    String creationTime, String expiryTime) {
         SQL sql = new SQL(plugin);
         String createListing = "INSERT INTO listings VALUES (" +
                 "'1'," +
                 "'" + player.getUniqueId() + "'," +
                 "'" + item + "'," +
                 "'" + price + "'," +
-                "'" + "1230" + "'," +
-                "'" + "1232" + "'" +
+                "'" + getTime() + "'," +
+                "'" + "" + "'" +
                 ");";
         sql.execute(createListing, sql.getDataSource());
 
@@ -72,5 +80,13 @@ public class ListingHandler {
     boolean mail() {
         //wat
         return false;
+    }
+
+    private String getTime()  {
+        return new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date());
+    }
+
+    private String initExpiry() {
+        return new SimpleDateFormat("yyy-MM-dd HH:mm").format(new Date());
     }
 }

@@ -21,8 +21,8 @@ public class Configuration {
 
     public Configuration(GlobalMarket plugin) {
         this.plugin = plugin;
-        this.defaultConfig = plugin.getConfiguration().getDefaultConfig();
-        this.configManager = plugin.getConfiguration().getConfigManager();
+        this.defaultConfig = plugin.getDefaultConfig();
+        this.configManager = plugin.getConfigManager();
     }
 
     public void loadConfig(Logger logger) {

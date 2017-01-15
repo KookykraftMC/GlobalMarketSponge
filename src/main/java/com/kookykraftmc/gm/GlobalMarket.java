@@ -36,7 +36,7 @@ public class GlobalMarket {
     @Inject
     private Logger logger;
 
-    public static Configuration configuration;
+    public Configuration configuration;
 
     private EconomyService economyService;
 
@@ -133,5 +133,13 @@ public class GlobalMarket {
 
     public Configuration getConfiguration() {
         return configuration;
+    }
+
+    public ConfigurationLoader<CommentedConfigurationNode> getConfigManager() {
+        return configManager;
+    }
+
+    public File getDefaultConfig() {
+        return defaultConfig;
     }
 }

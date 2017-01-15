@@ -8,9 +8,13 @@ import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.spec.CommandExecutor;
+import org.spongepowered.api.data.DataContainer;
+import org.spongepowered.api.data.persistence.DataTranslator;
+import org.spongepowered.api.data.persistence.DataTranslators;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.item.ItemTypes;
 import org.spongepowered.api.item.inventory.ItemStack;
+import org.spongepowered.api.item.inventory.ItemStackSnapshot;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
@@ -21,27 +25,36 @@ import static org.spongepowered.api.data.type.HandTypes.OFF_HAND;
 
 public class ListingCommand implements CommandExecutor {
 
-    private ListingHandler listingHandler;
-
     @Override
     public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
         if (src instanceof Player) {
 
-            listingHandler = GlobalMarket.listingHandler;
+            ListingHandler listingHandler = GlobalMarket.listingHandler;
 
             Player seller = (Player) src;
             BigDecimal price = argsPrice(src, args);
             Listing listing;
 
+            src.sendMessage(Text.of(TextColors.AQUA, getItemInHand(seller).createSnapshot().toString()));
+
+            System.out.println(getItemInHand(seller).toContainer().toString());
             if (getItemInHand(seller) != null) {
-                listing = new Listing(seller, getItemInHand(seller), price);
+                listing = listingHandler.create(seller, getItemInHand(seller), price, getItemInHand(seller).toContainer());
+
+                //ItemStack from Snapshot
+                ItemStackSnapshot itemSnap = getItemInHand(seller).createSnapshot();
+                DataContainer snapContainer = itemSnap.toContainer();
+                String testContainer = snapContainer.toString();
+//                DataTranslator dataTranslator = DataTranslators;
+//                System.out.println(itemSnap.toContainer());
+                ItemStack test = itemSnap.createStack();
 
                 src.sendMessage(Text.of(
-                        TextColors.RED,
-                        seller.getItemInHand(MAIN_HAND).get()
+                        TextColors.AQUA,
+                        ""
                 ));
 
-                ((Player) src).setItemInHand(OFF_HAND, getItemInHand(seller));
+                seller.setItemInHand(OFF_HAND, test);
 
                 src.sendMessage(Text.of(
                         TextColors.AQUA,
